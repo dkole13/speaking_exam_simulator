@@ -25,7 +25,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.12'
+          python-version: '3.13'
       - name: Установка зависимостей
         shell: bash
         run: |
