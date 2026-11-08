@@ -11,7 +11,7 @@ version = '1.0.0'
 description = """This project is aimed at helping the user to prepare for the speaking tasks
                  of international English language exams (specifically TOEFL)."""
 authors = [
-    { name = 'Anastasia Seliverstova' },
+    { name = 'Anastasiia Seliverstova' },
     { name = 'Daria Oleinik' },
     { name = 'Maria Zakieva' },
 ]
