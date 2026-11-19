@@ -47,11 +47,9 @@ class ASRModule:
 
         Args:
             audio_path: Path to audio file.
-            timestamp_type: Type of timestamps. Can be ASRTimestampsTypes.FULL_TEXT,
-            ASRTimestampsTypes.SEGMENT, ASRTimestampsTypes.WORD, ASRTimestampsTypes.CHAR.
+            timestamp_type: Type of timestamps. Can be ASRTimestampsTypes.FULL_TEXT, ASRTimestampsTypes.SEGMENT, ASRTimestampsTypes.WORD, ASRTimestampsTypes.CHAR.
             timestamps: Specify the need for timestamps. If False, return only text.
-            format_output: If False, return a list of timestamps and text fragments.
-            If True, return formatted text with timestamps.
+            format_output: If False, return a list of timestamps and text fragments. If True, return formatted text with timestamps.
         """
         transcript = self._infer(audio_path, timestamps)
         timestamp_value = timestamp_type.value
