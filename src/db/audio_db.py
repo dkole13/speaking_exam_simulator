@@ -2,9 +2,8 @@ import sqlite3 as sl
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
+from speaking_exam_simulator.core_utils.constants import DB_PATH
 from typing import Optional
-
-DB_PATH = Path(__file__).parent.parent.parent / "task_corpus" / "audio_files.db"
 
 
 @dataclass
@@ -34,7 +33,7 @@ class AudioFile:
 class TaskDatabase:
     """A class that creates the database with tasks."""
 
-    def __init__(self, db_path: Path = DB_PATH):
+    def __init__(self, db_path=DB_PATH):
         """
         Initialize an instance of TaskDatabase.
 

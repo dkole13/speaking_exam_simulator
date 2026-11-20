@@ -1,9 +1,5 @@
-from pathlib import Path
-
 from audio_db import AudioFile, TaskDatabase
-
-CORPUS_DIR = Path(__file__).parent.parent.parent / "task_corpus"
-AUDIO_EXTENSIONS = [".wav"]
+from speaking_exam_simulator.core_utils.constants import AUDIO_EXTENSIONS, CORPUS_DIR
 
 
 def create_db():
