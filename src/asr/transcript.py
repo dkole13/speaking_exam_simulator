@@ -64,6 +64,6 @@ class ASRModule:
 
         output = []
         for stamp in timestamps:
-            output.append(f"{stamp['start']:.2f}s - {stamp['end']}s : {stamp[timestamp_type.value]}")
+            output.append(f"{stamp['start']:.2f}s - {stamp['end']:.2f}s : {stamp[timestamp_type.value]}")
 
         return "\n".join(output)

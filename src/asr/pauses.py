@@ -12,7 +12,7 @@ def get_pauses(audio_path: Path | str, pause_threshold=VAD_THRESHOLD, format_out
 
     Args:
         audio_path (str): Path to audio file.
-        pause_threshold (int, optional): Pause threshold. Defaults to VAD_THRESHOLD from core_utils.constants.
+        pause_threshold (float, int): Pause threshold. Defaults to VAD_THRESHOLD from core_utils.constants.
         format_output (bool): Specify if the output has to be formatted.
     """
     torch.set_num_threads(1)
