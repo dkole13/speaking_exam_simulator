@@ -1,4 +1,5 @@
 def main():
+    """Run main."""
     print("Hello from speaking-exam-simulator!")
 
 
