@@ -1,7 +1,7 @@
 """Public interface used by the main application."""
 from typing import Any
 
-from audio_db import AudioFile
+from src.db.audio_db import AudioFile
 
 from src.llm.generation import generate_feedback
 from src.llm.schemas import FeedbackResponse
