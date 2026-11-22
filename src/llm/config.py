@@ -2,12 +2,14 @@
 
 import os
 from dataclasses import dataclass
+
 from dotenv import load_dotenv
+
 from core_utils.constants import (
-    LLM_MODEL_NAME,
-    LLM_MODEL_FILENAME,
-    LLM_N_CTX,
     LLM_MAX_TOKENS,
+    LLM_MODEL_FILENAME,
+    LLM_MODEL_NAME,
+    LLM_N_CTX,
     LLM_TEMPERATURE,
     LLM_TOP_K,
     LLM_TOP_P,
@@ -58,6 +60,7 @@ class Settings:
         max_tokens: Maximum number of tokens in the generated response.
             Environment variable: LLM_MAX_TOKENS.
     """
+
     model_repo_id: str = os.getenv("MODEL_REPO_ID", LLM_MODEL_NAME)
     model_filename: str = os.getenv("MODEL_FILENAME", LLM_MODEL_FILENAME)
     n_ctx: int = int(os.getenv("MODEL_N_CTX", str(LLM_N_CTX)))

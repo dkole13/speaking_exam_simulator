@@ -1,6 +1,7 @@
 """Load and cache the configured GGUF language model."""
 
 from functools import lru_cache
+
 from llama_cpp import Llama
 
 from .config import settings

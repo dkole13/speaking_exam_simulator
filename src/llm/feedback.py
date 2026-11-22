@@ -2,15 +2,12 @@
 from typing import Any
 
 from src.db.audio_db import AudioFile
-
 from src.llm.generation import generate_feedback
 from src.llm.schemas import FeedbackResponse
 
 
 class FeedbackEngine:
-    """
-    Provide an interface for generating feedback on submitted answers.
-    """
+    """Provide an interface for generating feedback on submitted answers."""
 
     def evaluate(self, task: AudioFile, answers: list[dict[str, Any]],) -> FeedbackResponse:
         """

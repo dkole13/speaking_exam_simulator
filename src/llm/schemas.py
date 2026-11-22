@@ -1,7 +1,13 @@
 """Pydantic schemas for task input and generated speaking feedback."""
 
 from enum import Enum
-from pydantic import BaseModel, Field, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, Field
+
+from core_utils.constants import (
+    MAX_ANSWER_SCORE,
+    MIN_ANSWER_SCORE,
+)
 
 
 class TaskType(str, Enum):
@@ -12,6 +18,7 @@ class TaskType(str, Enum):
         REPETITION: A task in which the student repeats a reference sentence.
         INTERVIEW: A task in which the student answers an interview question.
     """
+
     REPETITION = "repetition"
     INTERVIEW = "interview"
 
@@ -41,6 +48,7 @@ class FeedbackRequest(BaseModel):
         task_type: Type of speaking task to evaluate.
         answers: Student answers paired with their source database items.
     """
+
     model_config = ConfigDict(str_strip_whitespace=True)
 
     task_type: TaskType
@@ -55,6 +63,7 @@ class Criterion(BaseModel):
         comment: Feedback explaining the evaluation.
         evidence: Supporting text excerpts or observations. Defaults to an empty list.
     """
+
     comment: str
     evidence: list[str] = Field(default_factory=list)
 
@@ -70,10 +79,11 @@ class AnswerFeedback(BaseModel):
         answer_score: Score assigned to the answer, from 0 to 5 inclusive.
         criteria: Evaluations indexed by criterion name.
     """
+
     answer_id: int = Field(ge=1)
     db_task: str
     student_answer: str
-    answer_score: int = Field(ge=0, le=5)
+    answer_score: int = Field(ge=MIN_ANSWER_SCORE, le=MAX_ANSWER_SCORE)
     criteria: dict[str, Criterion]
 
 

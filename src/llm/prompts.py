@@ -3,15 +3,15 @@
 import json
 from typing import Any
 
+from core_utils.constants import INTERVIEW, REPETITION
 from src.llm.prompt_templates import (
     LISTEN_AND_REPEAT_PROMPT,
     TAKE_AN_INTERVIEW_PROMPT,
 )
 
-
 PROMPTS = {
-    "repetition": LISTEN_AND_REPEAT_PROMPT,
-    "interview": TAKE_AN_INTERVIEW_PROMPT,
+    REPETITION: LISTEN_AND_REPEAT_PROMPT,
+    INTERVIEW: TAKE_AN_INTERVIEW_PROMPT,
 }
 
 
