@@ -12,9 +12,8 @@ from core_utils.constants import (
     MAX_TASK_SCORE,
     SUPPORTED_TASK_TYPES,
 )
-
-from src.llm.schemas import FeedbackResponse
 from src.llm.exceptions import OutputValidationError
+from src.llm.schemas import FeedbackResponse
 
 
 def extract_json(text: str) -> dict:
