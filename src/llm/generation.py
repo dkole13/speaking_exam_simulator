@@ -6,7 +6,7 @@ from src.asr import count_wer
 from src.llm.config import settings
 from src.llm.model import get_model
 from src.llm.prompts import build_messages
-from src.llm.schemas import FeedbackRequest
+from src.llm.schemas import FeedbackRequest, TaskAnswer
 from src.llm.validators import validate_feedback
 
 
@@ -32,9 +32,7 @@ def _call_model(messages: list[dict[str, str]]) -> str:
     return response["choices"][0]["message"]["content"].strip()
 
 
-def _add_wer_metrics(
-    answers: list[dict[str, Any]],
-) -> list[dict[str, Any]]:
+def _add_wer_metrics(answers: list[dict[str, TaskAnswer]]) -> list[dict[str, Any]]:
     """
     Calculate WER metrics and add them to repetition answers.
 
@@ -42,7 +40,7 @@ def _add_wer_metrics(
         answers: List of answers containing answer_id, db_task, and answer_text.
 
     Returns:
-        A new list of answers enriched with WER metrics.
+        A new list of answers filled with WER metrics.
     """
     wer_answers = []
 
