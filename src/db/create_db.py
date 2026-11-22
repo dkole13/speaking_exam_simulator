@@ -1,5 +1,5 @@
-from audio_db import AudioFile, TaskDatabase
-from speaking_exam_simulator.core_utils.constants import AUDIO_EXTENSIONS, CORPUS_DIR
+from .audio_db import AudioFile, TaskDatabase
+from core_utils.constants import AUDIO_EXTENSIONS, CORPUS_DIR
 
 
 def create_db():

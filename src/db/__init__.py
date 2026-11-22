@@ -9,7 +9,7 @@ Public API:
     AudioFile: Dataclass representing an audio record and its transcription.
 """
 
-from audio_db import AudioFile, TaskDatabase
+from .audio_db import AudioFile, TaskDatabase
 
 
 __all__ = ["AudioFile", "TaskDatabase"]
