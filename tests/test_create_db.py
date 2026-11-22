@@ -6,8 +6,6 @@ from core_utils.constants import AUDIO_EXTENSIONS
 
 AUDIO_EXT = next(iter(AUDIO_EXTENSIONS))
 
-# ---------- fixtures ----------
-
 
 @pytest.fixture
 def corpus(tmp_path):
@@ -40,8 +38,6 @@ def touch_audio(folder, stem: str, ext: str = AUDIO_EXT):
     (folder / f"{stem}{ext}").write_bytes(b"\x00")
 
 
-# ---------- 1. happy path for both task types ----------
-
 @pytest.mark.parametrize(
     "task_type_dir, task_type_name, id_task_type",
     [("0", "repetition", 0), ("1", "interview", 1)],
@@ -65,8 +61,6 @@ def test_create_db_parses_audio_file(
     assert obj.id_task == 3
 
 
-# ---------- 2. transcription: missing / blank / cp1251 ----------
-
 @pytest.mark.parametrize(
     "txt_bytes, expected",
     [
@@ -87,8 +81,6 @@ def test_create_db_transcription_variants(repo, block, txt_bytes, expected):
     assert obj.transcription == expected
 
 
-# ---------- 3. non-audio files and garbage are ignored ----------
-
 def test_create_db_ignores_non_audio_and_garbage(repo, corpus, block):
     (corpus / "readme.txt").write_text("hi")
     d = block("0", "1")
@@ -99,15 +91,11 @@ def test_create_db_ignores_non_audio_and_garbage(repo, corpus, block):
     repo.add_many.assert_not_called()
 
 
-# ---------- 4. unknown task type is skipped ----------
-
 def test_create_db_skips_unknown_task_type(repo, block):
     touch_audio(block("2", "1"), "2.1.1")
     create_db()
     repo.add_many.assert_not_called()
 
-
-# ---------- 5. invalid format -> ValueError ----------
 
 @pytest.mark.parametrize(
     "make_tree",
@@ -128,8 +116,6 @@ def test_create_db_invalid_format_raises(repo, corpus, make_tree):
         create_db()
 
 
-# ---------- 6. id_task comes from the last char (safe: task ids are single-digit) ----------
-
 @pytest.mark.parametrize(
     "task_type_dir, task_id",
     [
@@ -144,8 +130,6 @@ def test_create_db_id_task_single_digit(repo, block, task_type_dir, task_id):
     (obj,) = repo.add_many.call_args[0][0]
     assert obj.id_task == task_id
 
-
-# ---------- 7. contract: fixed task id limits ----------
 
 @pytest.mark.parametrize(
     "task_type_dir, task_id",
@@ -163,8 +147,6 @@ def test_create_db_documents_valid_task_id_range(repo, block, task_type_dir, tas
     (obj,) = repo.add_many.call_args[0][0]
     assert obj.id_task == task_id
 
-
-# ---------- 8. reference behaviour: accumulator is not reset ----------
 
 def test_create_db_accumulates_across_task_types(repo, block):
     touch_audio(block("0", "1"), "0.1.1")
