@@ -1,26 +1,23 @@
-from core_utils.constants import DB_PATH, ANSWERS_DIR
-from core_utils.timestamps import ASRTimestampsTypes
-from src.db.create_db import create_db
-from src.asr.transcript import ASRModule
-from src.llm.generation import generate_feedback
-
-import sqlite3 as sl
 import glob
+import sqlite3 as sl
+
+from core_utils.constants import ANSWERS_DIR, DB_PATH
+from core_utils.timestamps import ASRTimestampsTypes
+from src.asr.transcript import ASRModule
+from src.db.create_db import create_db
+from src.llm.generation import generate_feedback
 
 
 def select_sample_tasks():
+    """Select first task for each task type for demo."""
     conn = sl.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT transcription FROM audio_files WHERE (id_task_type=0 AND id_group=1)")
-    transcripts_repetition = cur.fetchall()
-    cur.execute("SELECT transcription FROM audio_files WHERE (id_task_type=1 AND id_group=1)")
-    transcripts_interview = cur.fetchall()
+    transcripts_repetition = conn.execute("SELECT transcription FROM audio_files WHERE (id_task_type=0 AND id_group=1)").fetchall()
+    transcripts_interview = conn.execute("SELECT transcription FROM audio_files WHERE (id_task_type=1 AND id_group=1)").fetchall()
     conn.close()
     return {
         'repetition': transcripts_repetition,
         'interview': transcripts_interview
     }
-
 
 
 if __name__ == "__main__":
@@ -46,7 +43,8 @@ if __name__ == "__main__":
         "db_task": task[0],
         "answer_id": i + 1,
         "answer_text": transcript
-    } for i, (transcript, task) in enumerate(zip(repetition_transcripts, repetition_tasks))]
+    } for i, (transcript, task) in enumerate(zip(
+        repetition_transcripts, repetition_tasks, strict=False))]
 
     interview_transcripts = []
     for audio in interview_audios:
@@ -57,7 +55,8 @@ if __name__ == "__main__":
         "db_task": task[0],
         "answer_id": i + 1,
         "answer_text": transcript
-    } for i, (transcript, task) in enumerate(zip(interview_transcripts, interview_tasks))]
+    } for i, (transcript, task) in enumerate(zip(
+        interview_transcripts, interview_tasks, strict=False))]
 
     repetition_feedback = generate_feedback("repetition", repetition_formatted_tasks)
     interview_feedback = generate_feedback("interview", interview_formatted_tasks)
