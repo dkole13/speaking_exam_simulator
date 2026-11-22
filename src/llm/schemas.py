@@ -61,6 +61,7 @@ class Criterion(BaseModel):
         comment: Feedback explaining the evaluation.
         evidence: Supporting text excerpts or observations. Defaults to an empty list.
     """
+
     model_config = ConfigDict(str_strip_whitespace=True)
 
     comment: str
@@ -78,6 +79,7 @@ class AnswerFeedback(BaseModel):
         answer_score: Score assigned to the answer, from 0 to 5 inclusive.
         criteria: Evaluations indexed by criterion name.
     """
+
     model_config = ConfigDict(str_strip_whitespace=True)
 
     answer_id: int = Field(ge=1)

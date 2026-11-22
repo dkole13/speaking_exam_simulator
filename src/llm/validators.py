@@ -12,7 +12,7 @@ from core_utils.constants import (
     SUPPORTED_TASK_TYPES,
 )
 from src.llm.exceptions import OutputValidationError
-from src.llm.schemas import FeedbackResponse
+from src.llm.schemas import AnswerFeedback, FeedbackResponse
 
 
 def extract_json(text: str) -> dict:
@@ -165,7 +165,7 @@ def _validate_source_answers(
         _validate_single_answer(generated, source)
 
 
-def _validate_single_answer(generated: Any,source: dict[str, Any]) -> None:
+def _validate_single_answer(generated: Any,source: dict[str, AnswerFeedback]) -> None:
     """
     Compare one generated answer with its original input.
 

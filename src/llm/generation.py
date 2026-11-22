@@ -1,6 +1,8 @@
 """Generate and validate LLM feedback for submitted answers."""
 from typing import Any
 
+from core_utils.constants import REPETITION
+from src.asr import count_wer
 from src.llm.config import settings
 from src.llm.model import get_model
 from src.llm.prompts import build_messages
@@ -30,6 +32,43 @@ def _call_model(messages: list[dict[str, str]]) -> str:
     return response["choices"][0]["message"]["content"].strip()
 
 
+def _add_wer_metrics(
+    answers: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """
+    Calculate WER metrics and add them to repetition answers.
+
+    Args:
+        answers: List of answers containing answer_id, db_task, and answer_text.
+
+    Returns:
+        A new list of answers enriched with WER metrics.
+    """
+    wer_answers = []
+
+    for answer in answers:
+        wer, total_words, ins_rate, del_rate, sub_rate = count_wer(
+            hypothesis=answer["answer_text"],
+            reference=answer["db_task"],
+            format_output=False,
+        )
+
+        wer_answer = {
+            **answer,
+            "wer": {
+                "wer": float(wer),
+                "total_words": int(total_words),
+                "insertion_rate": float(ins_rate),
+                "deletion_rate": float(del_rate),
+                "substitution_rate": float(sub_rate),
+            },
+        }
+
+        wer_answers.append(wer_answer)
+
+    return wer_answers
+
+
 def generate_feedback(task_type: str, answers: list[dict[str, Any]]):
     """
     Generate and validate feedback for the given task type and answers.
@@ -44,7 +83,11 @@ def generate_feedback(task_type: str, answers: list[dict[str, Any]]):
     request = FeedbackRequest(task_type=task_type, answers=answers)
 
     normalized_answers = [answer.model_dump() for answer in request.answers]
-    messages = build_messages(task_type=task_type, answers=normalized_answers)
+
+    if request.task_type.value == REPETITION:
+        messages = build_messages(task_type=task_type, answers=_add_wer_metrics(normalized_answers))
+    else:
+        messages = build_messages(task_type=task_type, answers=normalized_answers)
 
     raw = _call_model(messages)
     return validate_feedback(
