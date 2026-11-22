@@ -49,8 +49,6 @@ class FeedbackRequest(BaseModel):
         answers: Student answers paired with their source database items.
     """
 
-    model_config = ConfigDict(str_strip_whitespace=True)
-
     task_type: TaskType
     answers: list[TaskAnswer]
 
@@ -63,6 +61,7 @@ class Criterion(BaseModel):
         comment: Feedback explaining the evaluation.
         evidence: Supporting text excerpts or observations. Defaults to an empty list.
     """
+    model_config = ConfigDict(str_strip_whitespace=True)
 
     comment: str
     evidence: list[str] = Field(default_factory=list)
@@ -79,6 +78,7 @@ class AnswerFeedback(BaseModel):
         answer_score: Score assigned to the answer, from 0 to 5 inclusive.
         criteria: Evaluations indexed by criterion name.
     """
+    model_config = ConfigDict(str_strip_whitespace=True)
 
     answer_id: int = Field(ge=1)
     db_task: str
@@ -97,8 +97,6 @@ class FeedbackResponse(BaseModel):
         total_score: Non-negative total score reported for the task.
         max_score: Positive maximum possible score for the task.
     """
-
-    model_config = ConfigDict(str_strip_whitespace=True)
 
     task_type: TaskType
     answers: list[AnswerFeedback]
