@@ -33,7 +33,7 @@ LISTEN_AND_REPEAT_PROMPT = {
 
         Ответь в формате JSON со следующей структурой:
         {
-          "task_type": "listen and repeat",
+          "task_type": "repetition",
           "answers": [
             {
               "answer_id": 1,
