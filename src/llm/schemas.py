@@ -5,15 +5,25 @@ from pydantic import BaseModel, Field, ConfigDict
 
 
 class TaskType(str, Enum):
+    """
+    Supported speaking task types.
+
+    Attributes:
+        REPETITION: A task in which the student repeats a reference sentence.
+        INTERVIEW: A task in which the student answers an interview question.
+    """
     REPETITION = "repetition"
     INTERVIEW = "interview"
 
 
 class TaskAnswer(BaseModel):
-    """One response and its matching source item from the database.
+    """
+    One response and its matching source item from the database.
 
-    For repetition, database_task is the reference sentence.
-    For interview, database_task is the interview question.
+    Attributes:
+        answer_id: Answer identifier, which must be at least 1.
+        db_task: Non-empty reference sentence for a repetition task or interview question for an interview task.
+        answer_text: ASR transcript of the student's answer. May be empty if no speech was recognized.
     """
 
     model_config = ConfigDict(str_strip_whitespace=True)
@@ -24,6 +34,13 @@ class TaskAnswer(BaseModel):
 
 
 class FeedbackRequest(BaseModel):
+    """
+    Input data for generating feedback on a speaking task.
+
+    Attributes:
+        task_type: Type of speaking task to evaluate.
+        answers: Student answers paired with their source database items.
+    """
     model_config = ConfigDict(str_strip_whitespace=True)
 
     task_type: TaskType
@@ -31,25 +48,45 @@ class FeedbackRequest(BaseModel):
 
 
 class Criterion(BaseModel):
+    """
+    Evaluation of a single criterion.
+
+    Attributes:
+        comment: Feedback explaining the evaluation.
+        evidence: Supporting text excerpts or observations. Defaults to an empty list.
+    """
     comment: str
     evidence: list[str] = Field(default_factory=list)
 
 
 class AnswerFeedback(BaseModel):
-    """Feedback for one answer within a task."""
+    """
+    Generated feedback for one answer within a speaking task.
 
+    Attributes:
+        answer_id: Identifier of the evaluated answer, which must be at least 1.
+        db_task: Source reference sentence or interview question.
+        student_answer: Transcript of the student's answer.
+        answer_score: Score assigned to the answer, from 0 to 5 inclusive.
+        criteria: Evaluations indexed by criterion name.
+    """
     answer_id: int = Field(ge=1)
     db_task: str
     student_answer: str
     answer_score: int = Field(ge=0, le=5)
     criteria: dict[str, Criterion]
-    # strengths: list[str] = Field(default_factory=list)
-    # improvements: list[str] = Field(default_factory=list)
-    # corrected_or_suggested_answer: str
 
 
 class FeedbackResponse(BaseModel):
-    """Complete feedback returned from one model call for one task."""
+    """
+    Complete feedback generated for one speaking task.
+
+    Attributes:
+        task_type: Type of speaking task evaluated.
+        answers: Individual feedback entries for the student's answers.
+        total_score: Non-negative total score reported for the task.
+        max_score: Positive maximum possible score for the task.
+    """
 
     model_config = ConfigDict(str_strip_whitespace=True)
 
@@ -57,5 +94,3 @@ class FeedbackResponse(BaseModel):
     answers: list[AnswerFeedback]
     total_score: int = Field(ge=0)
     max_score: int = Field(gt=0)
-    # overall_comment: str
-    # disclaimer: str = "Ответ сгенерирован ИИ. Не является официальной оценкой TOEFL."

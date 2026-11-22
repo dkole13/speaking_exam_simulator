@@ -1,4 +1,4 @@
-"""Parse and validate model output."""
+"""Parse model output and validate feedback structure and consistency."""
 
 import json
 import re
@@ -11,7 +11,19 @@ from src.llm.exceptions import OutputValidationError
 
 
 def extract_json(text: str) -> dict:
-    """Parse raw JSON, tolerating accidental Markdown fences or surrounding text."""
+    """
+    Parse raw JSON, tolerating accidental Markdown fences or surrounding text.
+
+    Args:
+        text: Raw text returned by the model.
+
+    Returns:
+        The parsed JSON value, expected to be a dictionary.
+
+    Raises:
+        OutputValidationError: If initial parsing fails and no brace-delimited
+        JSON object can be found, or if the extracted substring is invalid JSON.
+    """
     cleaned = text.strip()
     cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, flags=re.IGNORECASE)
     cleaned = re.sub(r"\s*```$", "", cleaned)
@@ -34,6 +46,24 @@ def validate_feedback(
     expected_task_type: str,
     expected_answers: list[dict[str, Any]] | None = None,
 ) -> FeedbackResponse:
+    """
+    Parse raw text and validate feedback structure and consistency.
+
+    Args:
+        raw_text: Raw feedback text returned by the model.
+        expected_task_type: Expected value of the feedback task type.
+        expected_answers: Optional source answers used for consistency checks.
+            Each dictionary is expected to contain "answer_id" and "db_task".
+            A missing "answer_text" is treated as an empty string.
+
+    Returns:
+        The parsed and validated feedback response.
+
+    Raises:
+        OutputValidationError: If JSON extraction or schema validation fails,
+        the task type or total score is incorrect, the supplied source
+        answers do not contain exactly seven entries, or a compared answer differs from its source.
+    """
     data = extract_json(raw_text)
     try:
         result = FeedbackResponse.model_validate(data)

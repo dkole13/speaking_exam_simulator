@@ -19,7 +19,20 @@ def build_messages(
     task_type: str,
     answers: list[dict[str, Any]]
 ) -> list[dict[str, str]]:
+    """
+    Build system and user messages for the specified speaking task.
 
+    Args:
+        task_type: Task type identifying the prompt template. Supported values are "repetition" and "interview".
+        answers: Answer dictionaries to serialize and include in the prompt.
+
+    Returns:
+        Two chat messages in order: the system instructions and the user
+        prompt containing the serialized answers.
+
+    Raises:
+        ValueError: If the task type is not supported.
+    """
     if hasattr(task_type, "value"):
         task_type = task_type.value
 
