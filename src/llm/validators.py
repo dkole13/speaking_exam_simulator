@@ -1,4 +1,3 @@
-
 """Parse model output and validate feedback structure and consistency."""
 
 import json
