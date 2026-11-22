@@ -17,3 +17,5 @@ build/
 
 models/*
 !models/.gitkeep
+
+user_answers/
