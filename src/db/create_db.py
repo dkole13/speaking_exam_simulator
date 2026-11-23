@@ -1,5 +1,6 @@
-from audio_db import AudioFile, TaskDatabase
-from speaking_exam_simulator.core_utils.constants import AUDIO_EXTENSIONS, CORPUS_DIR
+from core_utils.constants import AUDIO_EXTENSIONS, CORPUS_DIR
+
+from .audio_db import AudioFile, TaskDatabase
 
 
 def create_db():
@@ -9,7 +10,7 @@ def create_db():
 
     audio_files_to_insert = []
 
-    for task_dir in CORPUS_DIR.iterdir():
+    for task_dir in sorted(CORPUS_DIR.iterdir()):
         if not task_dir.is_dir():
             continue
         if task_dir.name == "0":
@@ -21,12 +22,12 @@ def create_db():
         else:
             continue
 
-        for group_dir in task_dir.iterdir():
+        for group_dir in sorted(task_dir.iterdir()):
             if not group_dir.is_dir():
                 continue
             id_group = int(group_dir.name)
 
-            for file_path in group_dir.iterdir():
+            for file_path in sorted(group_dir.iterdir()):
                 if file_path.suffix.lower() not in AUDIO_EXTENSIONS:
                     continue
                 txt_path = file_path.with_suffix(".txt")
