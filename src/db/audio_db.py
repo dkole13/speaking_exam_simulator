@@ -1,9 +1,9 @@
 import sqlite3 as sl
 from contextlib import contextmanager
 from dataclasses import dataclass
-from pathlib import Path
-from core_utils.constants import DB_PATH
 from typing import Optional
+
+from core_utils.constants import DB_PATH
 
 
 @dataclass

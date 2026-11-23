@@ -11,5 +11,4 @@ Public API:
 
 from .audio_db import AudioFile, TaskDatabase
 
-
 __all__ = ["AudioFile", "TaskDatabase"]
