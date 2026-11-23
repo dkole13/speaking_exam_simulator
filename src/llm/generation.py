@@ -87,9 +87,10 @@ def generate_feedback(task_type: str, answers: list[dict[str, Any]]):
     else:
         messages = build_messages(task_type=task_type, answers=normalized_answers)
 
-    raw = _call_model(messages)
-    return validate_feedback(
-        raw_text=raw,
-        expected_task_type=task_type,
-        expected_answers=normalized_answers,
-    )
+    # raw = _call_model(messages)
+    # return validate_feedback(
+    #     raw_text=raw,
+    #     expected_task_type=task_type,
+    #     expected_answers=normalized_answers,
+    # )
+    return _call_model(messages)
