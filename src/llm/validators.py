@@ -132,8 +132,10 @@ def _validate_scores(result: FeedbackResponse, expected_task_type: str) -> None:
 
     calculated_total = sum(answer.answer_score for answer in result.answers)
     if result.total_score != calculated_total:
-        raise OutputValidationError(f"Incorrect total_score: model returned {result.total_score}, "
-                                    f"but the sum of answer scores is {calculated_total}.")
+        raise OutputValidationError(
+            f"Incorrect total_score: model returned {result.total_score}, "
+            f"but the sum of answer scores is {calculated_total}."
+        )
 
 
 def _validate_source_answers(
@@ -158,14 +160,15 @@ def _validate_source_answers(
     """
     expected_count = ANSWERS_PER_TASK[expected_task_type]
     if len(expected_answers) != expected_count:
-        raise OutputValidationError(f"Input must contain exactly {expected_count} "
-                                    f"answers for task '{expected_task_type}'.")
+        raise OutputValidationError(
+            f"Input must contain exactly {expected_count} answers for task '{expected_task_type}'."
+        )
 
     for generated, source in zip(result.answers, expected_answers, strict=True):
         _validate_single_answer(generated, source)
 
 
-def _validate_single_answer(generated: Any,source: dict[str, AnswerFeedback]) -> None:
+def _validate_single_answer(generated: Any, source: dict[str, AnswerFeedback]) -> None:
     """
     Compare one generated answer with its original input.
 

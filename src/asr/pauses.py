@@ -17,29 +17,28 @@ def get_pauses(audio_path: Path | str, pause_threshold=VAD_THRESHOLD, format_out
     """
     torch.set_num_threads(1)
 
-    model, utils = torch.hub.load(repo_or_dir='snakers4/silero-vad', model='silero_vad')
+    model, utils = torch.hub.load(repo_or_dir="snakers4/silero-vad", model="silero_vad")
     (get_speech_timestamps, _, read_audio, _, _) = utils
 
     audio = read_audio(str(audio_path))
     speech_timestamps = get_speech_timestamps(audio, model, return_seconds=True)
 
-    end = speech_timestamps[0]['end']
+    end = speech_timestamps[0]["end"]
     pauses = []
     for timestamp in speech_timestamps[1:]:
-        start = timestamp['start']
+        start = timestamp["start"]
         pause = start - end
-        end = timestamp['end']
+        end = timestamp["end"]
         pauses.append(pause)
 
     filtered_pauses = [p for p in pauses if p >= pause_threshold]
 
     if not format_output:
         return {
-            'pauses': pauses,
-            'filtered_pauses': filtered_pauses,
-            'mean_pause_len': mean(pauses),
-            'mean_filtered_pause_len': mean(filtered_pauses)
+            "pauses": pauses,
+            "filtered_pauses": filtered_pauses,
+            "mean_pause_len": mean(pauses),
+            "mean_filtered_pause_len": mean(filtered_pauses),
         }
 
-    return \
-        f"""Паузы: {filtered_pauses}. Средняя длина пауз больше {pause_threshold}: {mean(filtered_pauses)}."""
+    return f"""Паузы: {filtered_pauses}. Средняя длина пауз больше {pause_threshold}: {mean(filtered_pauses)}."""

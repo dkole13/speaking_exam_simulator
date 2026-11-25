@@ -32,4 +32,3 @@ MAX_TASK_SCORE = {
     REPETITION: 35,
     INTERVIEW: 20,
 }
-

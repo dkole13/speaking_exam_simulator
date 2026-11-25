@@ -1,4 +1,5 @@
 """Generate and validate LLM feedback for submitted answers."""
+
 from typing import Any
 
 from core_utils.constants import REPETITION
@@ -7,7 +8,6 @@ from src.llm.config import settings
 from src.llm.model import get_model
 from src.llm.prompts import build_messages
 from src.llm.schemas import FeedbackRequest, TaskAnswer
-from src.llm.validators import validate_feedback
 
 
 def _call_model(messages: list[dict[str, str]]) -> str:
@@ -28,7 +28,7 @@ def _call_model(messages: list[dict[str, str]]) -> str:
         top_p=settings.top_p,
         max_tokens=settings.max_tokens,
         response_format={"type": "json_object"},
-        )
+    )
     return response["choices"][0]["message"]["content"].strip()
 
 
