@@ -33,7 +33,6 @@ def build_messages(
     Raises:
         ValueError: If the task type is not supported.
     """
-
     if task_type not in PROMPTS:
         raise ValueError(f"Unsupported task type: {task_type}")
 

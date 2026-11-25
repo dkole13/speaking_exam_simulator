@@ -7,7 +7,6 @@ from src.llm.config import settings
 from src.llm.model import get_model
 from src.llm.prompts import build_messages
 from src.llm.schemas import FeedbackRequest, TaskAnswer
-from src.llm.validators import validate_feedback
 
 
 def _call_model(messages: list[dict[str, str]]) -> str:
