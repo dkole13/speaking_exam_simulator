@@ -3,6 +3,7 @@ from core_utils.constants import AUDIO_EXTENSIONS, CORPUS_DIR
 from .audio_db import AudioFile, TaskDatabase
 
 
+# ruff: disable [C901]
 def create_db():
     """Create database from task corpus."""
     repo = TaskDatabase()
@@ -41,18 +42,21 @@ def create_db():
 
                 file_name = str(file_path.stem)
                 audio_obj = AudioFile(
-                            task_type=task_type,
-                            audio_path=file_name,
-                            id_group=id_group,
-                            transcription=transcription,
-                            id_task_type=id_task_type,
-                            id_task=int(file_name[-1:])
-                        )
+                    task_type=task_type,
+                    audio_path=file_name,
+                    id_group=id_group,
+                    transcription=transcription,
+                    id_task_type=id_task_type,
+                    id_task=int(file_name[-1:]),
+                )
 
                 audio_files_to_insert.append(audio_obj)
 
         if audio_files_to_insert:
             repo.add_many(audio_files_to_insert)
+
+
+# ruff: enable [C901]
 
 
 if __name__ == "__main__":

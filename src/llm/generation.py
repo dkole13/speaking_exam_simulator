@@ -1,4 +1,5 @@
 """Generate and validate LLM feedback for submitted answers."""
+
 from typing import Any
 
 from core_utils.constants import REPETITION
@@ -27,7 +28,7 @@ def _call_model(messages: list[dict[str, str]]) -> str:
         top_p=settings.top_p,
         max_tokens=settings.max_tokens,
         response_format={"type": "json_object"},
-        )
+    )
     return response["choices"][0]["message"]["content"].strip()
 
 

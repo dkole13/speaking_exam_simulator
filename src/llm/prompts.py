@@ -15,10 +15,7 @@ PROMPTS = {
 }
 
 
-def build_messages(
-    task_type: str,
-    answers: list[dict[str, Any]]
-) -> list[dict[str, str]]:
+def build_messages(task_type: str, answers: list[dict[str, Any]]) -> list[dict[str, str]]:
     """
     Build system and user messages for the specified speaking task.
 

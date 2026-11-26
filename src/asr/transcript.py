@@ -22,9 +22,7 @@ class ASRModule:
         else:
             return nemo_asr.models.ASRModel.from_pretrained(model_name=self._model_name)
 
-    def _infer(
-            self, audio_path: Path | str, put_timestamps=True
-    ):
+    def _infer(self, audio_path: Path | str, put_timestamps=True):
         """
         Infer ASR model.
 
@@ -39,8 +37,7 @@ class ASRModule:
         return transcript[0]
 
     def transcribe(
-            self, audio_path: Path | str, timestamp_type: ASRTimestampsTypes,
-            timestamps=True, format_output=True
+        self, audio_path: Path | str, timestamp_type: ASRTimestampsTypes, timestamps=True, format_output=True
     ):
         """
         Transcribe the audio.
