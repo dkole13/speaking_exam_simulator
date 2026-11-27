@@ -248,4 +248,13 @@ Submit a `Pull Request (PR)`
 Respond to feedback, make improvements, and help maintain project quality.
 
 
-License: Information about the software license (e.g., MIT License, Apache License).
+
+## License
+
+This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)**. You can find the full license text in 
+the [LICENSE](https://github.com/dkole13/speaking_exam_simulator/blob/main/LICENSE.txt) file.
+
+You are free to use, study, modify, and redistribute this software under the terms of the GNU GPL v3.0.
+
+The license applies only to the original source code developed for this project. Third-party datasets, audio recordings, 
+transcripts, pretrained models, and dependencies are subject to their respective licenses and terms of use.
