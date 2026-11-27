@@ -2,6 +2,7 @@ import glob
 import sqlite3 as sl
 
 from core_utils.constants import ANSWERS_DIR, DB_PATH
+from core_utils.logging_config import setup_logging
 from core_utils.timestamps import ASRTimestampsTypes
 from src.asr.transcript import ASRModule
 from src.db.create_db import create_db
@@ -22,6 +23,8 @@ def select_sample_tasks():
 
 
 if __name__ == "__main__":
+    setup_logging()
+
     if not DB_PATH.exists():
         create_db()
 
