@@ -65,5 +65,3 @@ def test_count_wer_normalizes_inputs(monkeypatch):
 
     assert captured["hypotheses"] == ["hello"]
     assert captured["references"] == ["hello"]
-
-
