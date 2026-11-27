@@ -1,9 +1,12 @@
+import logging
 from pathlib import Path
 
 import nemo.collections.asr as nemo_asr
 
 from core_utils.constants import ASR_MODEL_NAME, ASR_MODEL_PATH
 from core_utils.timestamps import ASRTimestampsTypes
+
+logger = logging.getLogger(__name__)
 
 
 class ASRModule:
@@ -18,8 +21,10 @@ class ASRModule:
     def _init_model(self):
         """Initialize ASR model."""
         if self._model_path.exists():
+            logger.info(f"Loading model from {self._model_path}.")
             return nemo_asr.models.ASRModel.restore_from(restore_path=self._model_path)
         else:
+            logger.info("Downloading ASR model.")
             return nemo_asr.models.ASRModel.from_pretrained(model_name=self._model_name)
 
     def _infer(self, audio_path: Path | str, put_timestamps=True):
@@ -33,7 +38,7 @@ class ASRModule:
         if isinstance(audio_path, Path):
             audio_path = str(audio_path)
 
-        transcript = self._model.transcribe([audio_path], timestamps=put_timestamps)
+        transcript = self._model.transcribe([audio_path], timestamps=put_timestamps, verbose=False)
         return transcript[0]
 
     def transcribe(
