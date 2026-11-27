@@ -1,4 +1,5 @@
 """Public interface used by the main application."""
+
 from typing import Any
 
 from src.db.audio_db import AudioFile
@@ -9,7 +10,11 @@ from src.llm.schemas import FeedbackResponse
 class FeedbackEngine:
     """Provide an interface for generating feedback on submitted answers."""
 
-    def evaluate(self, task: AudioFile, answers: list[dict[str, Any]],) -> FeedbackResponse:
+    def evaluate(
+        self,
+        task: AudioFile,
+        answers: list[dict[str, Any]],
+    ) -> FeedbackResponse:
         """
         Evaluate a task and return a feedback response.
 
@@ -26,7 +31,4 @@ class FeedbackEngine:
         if not task.transcription:
             raise ValueError("The database task has no transcription.")
 
-        return generate_feedback(
-            task_type=task.task_type.value,
-            answers=answers
-        )
+        return generate_feedback(task_type=task.task_type.value, answers=answers)

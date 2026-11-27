@@ -53,13 +53,13 @@ def create_db():
 
                 file_name = str(file_path.stem)
                 audio_obj = AudioFile(
-                            task_type=task_type,
-                            audio_path=file_name,
-                            id_group=id_group,
-                            transcription=transcription,
-                            id_task_type=id_task_type,
-                            id_task=int(file_name[-1:])
-                        )
+                    task_type=task_type,
+                    audio_path=file_name,
+                    id_group=id_group,
+                    transcription=transcription,
+                    id_task_type=id_task_type,
+                    id_task=int(file_name[-1:]),
+                )
 
                 audio_files_to_insert.append(audio_obj)
 

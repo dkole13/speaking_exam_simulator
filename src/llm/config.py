@@ -65,7 +65,7 @@ class Settings:
     model_filename: str = os.getenv("MODEL_FILENAME", LLM_MODEL_FILENAME)
     n_ctx: int = int(os.getenv("MODEL_N_CTX", str(LLM_N_CTX)))
     n_threads: int | None = _optional_int("MODEL_N_THREADS")
-    verbose: bool = (os.getenv("MODEL_VERBOSE", "false").lower() == "true")
+    verbose: bool = os.getenv("MODEL_VERBOSE", "false").lower() == "true"
     temperature: float = float(os.getenv("LLM_TEMPERATURE", str(LLM_TEMPERATURE)))
     top_k: int = int(os.getenv("LLM_TOP_K", str(LLM_TOP_K)))
     top_p: float = float(os.getenv("LLM_TOP_P", str(LLM_TOP_P)))
