@@ -208,13 +208,13 @@ Follow these steps to contribute effectively:
 2. Clone your fork:
 
 ```bash
-git clone https://github.com/nuelcas/mybrandname.git
+git clone https://github.com/dkole13/speaking_exam_simulator
 ```
 
 3. Create a feature branch:
 
 ```bash
-git checkout -b feat/your-feature-name
+git checkout -b 'your-feature-name'
 ```
 
 4. Set up the environment:
