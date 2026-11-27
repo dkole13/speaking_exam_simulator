@@ -169,7 +169,7 @@ You can customize model settings by creating a `.env` file in the project root.
 
 If no `.env` file is provided, the default configuration values are used.
 
-Available in `constants.py` settings include:
+Settings available in `constants.py` include:
 
 - `MODEL_REPO_ID` — Hugging Face repository ID of the LLM.
 - `MODEL_FILENAME` — GGUF model filename.
