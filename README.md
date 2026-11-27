@@ -4,7 +4,7 @@ The project is aimed at helping the user prepare for the speaking section of int
 language exams (specifically TOEFL iBT as of 2026). It includes a database of tasks of all types
 (Listen and Repeat, Take an Interview), does ASR and then provides LLM-based feedback. This project doesn't require GPU.
 
-### Tech Stack
+## Tech Stack
 
 - **Runtime**: Python 3.13.
 - **Package Manager**: uv.
@@ -20,8 +20,8 @@ language exams (specifically TOEFL iBT as of 2026). It includes a database of ta
 - **Python**: 3.13 or later.
 - **uv**: Python package and project dependency manager.
 - **Git**: For cloning the repository.
-- **CMake**: Required if llama-cpp-python needs to be built from source.
-- **C++ Compiler**: Required for building llama-cpp-python from source.
+- **CMake**: Optional; Required if llama-cpp-python needs to be built from source.
+- **C++ Compiler**: Optional; Required for building llama-cpp-python from source.
 - **Internet Connection**: Required for downloading pretrained models from Hugging Face.
 - **GPU**: Optional; the project supports CPU-only inference.
 
@@ -32,7 +32,7 @@ language exams (specifically TOEFL iBT as of 2026). It includes a database of ta
 git clone https://github.com/dkole13/speaking_exam_simulator
 ```
 
-2. Install uv:
+2. Install uv (only required if uv is not installed globally):
 ```bash
 pip install uv
 ```
@@ -208,7 +208,7 @@ Follow these steps to contribute effectively:
 2. Clone your fork:
 
 ```bash
-git clone https://github.com/dkole13/speaking_exam_simulator
+git clone https://github.com/yourusername/speaking_exam_simulator
 ```
 
 3. Create a feature branch:
@@ -220,13 +220,13 @@ git checkout -b 'your-feature-name'
 4. Set up the environment:
 
 - Follow the setup instructions in the `README` to install dependencies and configure your `.env` files.
-Follow code style and formatting fules
-
-5. Ensure consistent formatting before committing:
+5. Follow code style and formatting files. Ensure consistent formatting before committing:
 
 ```bash
 uv run ruff check
 ```
+
+Alternatively, it is ensured automatically by pre-commit.
 
 6. Use clear commit messages.
 
@@ -248,10 +248,4 @@ Submit a `Pull Request (PR)`
 Respond to feedback, make improvements, and help maintain project quality.
 
 
-to add (we need to discuss this, girls):
-
-Task List: Task lists in GitHub Flavored Markdown are used to track tasks or progress in issues and pull requests.
-
 License: Information about the software license (e.g., MIT License, Apache License).
-
-Contact: Maintainer’s email or other contact information for support or queries.
