@@ -2,12 +2,17 @@
 
 from typing import Any
 
+import logging
 from core_utils.constants import REPETITION
 from src.asr import count_wer
 from src.llm.config import settings
+from src.llm.exceptions import GenerationError
 from src.llm.model import get_model
 from src.llm.prompts import build_messages
 from src.llm.schemas import FeedbackRequest, TaskAnswer
+
+
+logger = logging.getLogger(__name__)
 
 
 def _call_model(messages: list[dict[str, str]]) -> str:
@@ -21,15 +26,29 @@ def _call_model(messages: list[dict[str, str]]) -> str:
         The generated message content with leading and trailing whitespace
         removed.
     """
-    response = get_model().create_chat_completion(
-        messages=messages,
-        temperature=settings.temperature,
-        top_k=settings.top_k,
-        top_p=settings.top_p,
-        max_tokens=settings.max_tokens,
-        response_format={"type": "json_object"},
-    )
-    return response["choices"][0]["message"]["content"].strip()
+    logger.debug("Sending request to LLM.")
+
+    try:
+        response = get_model().create_chat_completion(
+            messages=messages,
+            temperature=settings.temperature,
+            top_k=settings.top_k,
+            top_p=settings.top_p,
+            max_tokens=settings.max_tokens,
+            response_format={"type": "json_object"},
+        )
+        content = response["choices"][0]["message"]["content"]
+        if not content:
+            raise GenerationError("The model returned an empty response.")
+        logger.debug("LLM response received successfully.")
+        return content.strip()
+
+    except GenerationError:
+        raise
+
+    except Exception as exc:
+        logger.exception("LLM generation failed.")
+        raise GenerationError("LLM feedback generation failed.") from exc
 
 
 def _add_wer_metrics(answers: list[dict[str, TaskAnswer]]) -> list[dict[str, Any]]:
@@ -78,19 +97,39 @@ def generate_feedback(task_type: str, answers: list[dict[str, Any]]):
     Returns:
         The validated feedback returned by validate_feedback.
     """
-    request = FeedbackRequest(task_type=task_type, answers=answers)
+    logger.info(
+        "Starting feedback generation: task_type=%s, answers=%d",
+        task_type,
+        len(answers),
+    )
 
-    normalized_answers = [answer.model_dump() for answer in request.answers]
+    try:
+        request = FeedbackRequest(task_type=task_type, answers=answers)
+        normalized_answers = [answer.model_dump() for answer in request.answers]
+        model_answers = normalized_answers
 
-    if request.task_type.value == REPETITION:
-        messages = build_messages(task_type=task_type, answers=_add_wer_metrics(normalized_answers))
-    else:
-        messages = build_messages(task_type=task_type, answers=normalized_answers)
+        if request.task_type.value == REPETITION:
+            logger.info("Calculating WER metrics for repetition task.")
+            model_answers = _add_wer_metrics(normalized_answers)
+            logger.info("WER metrics calculated successfully.")
 
-    # raw = _call_model(messages)
-    # return validate_feedback(
-    #     raw_text=raw,
-    #     expected_task_type=task_type,
-    #     expected_answers=normalized_answers,
-    # )
-    return _call_model(messages)
+        messages = build_messages(task_type=request.task_type.value, answers=model_answers)
+
+        logger.debug("Prompt messages built successfully.")
+
+        # raw = _call_model(messages)
+        # return validate_feedback(
+        #     raw_text=raw,
+        #     expected_task_type=task_type,
+        #     expected_answers=normalized_answers,
+        # )
+
+        raw_response = _call_model(messages)
+
+        logger.info("Feedback generated successfully.")
+
+        return raw_response
+
+    except Exception:
+        logger.exception("Feedback generation failed: task_type=%s",task_type)
+        raise
